@@ -1,0 +1,46 @@
+// Fungsi utama untuk mengurutkan array menggunakan algoritma Quick Sort
+function sort(data, start, end) {
+    // Fungsi untuk membagi array dan mengatur posisi pivot
+    function partition(data, start, end) {
+        // Fungsi untuk menukar dua elemen dalam array
+        function swap(x, y) {
+            const temp = data[y]; 
+            data[y] = data[x];    
+            data[x] = temp;      
+        }
+
+        const pivot = data[end]; 
+        let center = start;      
+
+        // Iterasi melalui elemen dari start hingga end - 1
+        for (let ref = start; ref < end; ++ref) {
+            if (data[ref] < pivot) {
+                swap(center, ref); 
+                ++center;          
+            }
+        }
+
+        // Setelah iterasi, tukar pivot dengan elemen di posisi center
+        swap(center, end);
+        return center;
+    }
+
+    // Jika start lebih besar atau sama dengan end, tidak ada yang perlu diurutkan
+    if (start >= end) return;
+
+    // Panggil fungsi partition untuk mendapatkan posisi pivot
+    const center = partition(data, start, end);
+    
+    // Panggil sort secara rekursif untuk bagian kiri dan kanan dari pivot
+    sort(data, start, center - 1);
+    sort(data, center + 1, end);
+}
+
+// Array yang akan diurutkan
+let angka = [8, 7, 4, 0, 9, 5, 6];
+
+// Panggil fungsi sort untuk mengurutkan array
+sort(angka, 0, angka.length - 1);
+
+// Cetak hasil array yang telah diurutkan
+console.log(angka.join(' ')); // Output: 0 4 5 6 7 8 9
