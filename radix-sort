@@ -1,0 +1,44 @@
+// Fungsi untuk melakukan Counting Sort berdasarkan digit tertentu
+function countingSort(arr, exp) {
+    const n = arr.length;
+    const output = new Array(n); 
+    const count = new Array(10).fill(0);
+
+    // Hitung frekuensi digit untuk posisi yang ditentukan oleh exp
+    for (let i = 0; i < n; i++) {
+        const index = Math.floor(arr[i] / exp) % 10;
+        count[index]++; 
+    }
+
+    // Ubah count[i] sehingga count[i] sekarang berisi posisi elemen dalam output
+    for (let i = 1; i < 10; i++) {
+        count[i] += count[i - 1];
+    }
+
+    // Bangun array output dengan mengisi elemen berdasarkan posisi yang dihitung
+    for (let i = n - 1; i >= 0; i--) {
+        const index = Math.floor(arr[i] / exp) % 10; 
+        output[count[index] - 1] = arr[i];
+        count[index]--; 
+    }
+
+    // Salin array output ke arr, sehingga arr sekarang berisi angka yang terurut berdasarkan digit saat ini
+    for (let i = 0; i < n; i++) {
+        arr[i] = output[i]; 
+    }
+}
+
+// Fungsi utama untuk melakukan Radix Sort
+function radixSort(arr) {
+    const max = Math.max(...arr);
+
+    // Lakukan counting sort untuk setiap digit, mulai dari digit terkecil
+    for (let exp = 1; Math.floor(max / exp) > 0; exp *= 10) {
+        countingSort(arr, exp); 
+    }
+}
+
+// Contoh penggunaan
+const arr = [170, 45, 75, 90, 802, 24, 2, 66]; // Array yang akan diurutkan
+radixSort(arr); // Panggil fungsi radixSort untuk mengurutkan array
+console.log(arr); // Cetak hasil array yang telah diurutkan: [2, 24, 45, 66, 75, 90, 170, 802]
